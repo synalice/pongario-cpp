@@ -9,6 +9,7 @@
   ninja,
   doxygen,
   pkg-config,
+  sfml,
 }:
 stdenv.mkDerivation {
   pname = "pongario-cpp";
@@ -27,6 +28,7 @@ stdenv.mkDerivation {
     ninja
     doxygen
     pkg-config
+    sfml
   ];
 
   meta = {

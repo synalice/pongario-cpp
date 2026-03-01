@@ -67,6 +67,8 @@ repos:
           - --suppress=unmatchedSuppression
           - --suppress=checkersReport
           - --suppress=unusedFunction
+          - --suppress=*:/nix/store/*
+          - --include=cppcheck_platform.h
           - --project=builddir/compile_commands.json
         types_or: [c++, header]
         pass_filenames: false

@@ -49,5 +49,7 @@ add_project_arguments(
     language: 'cpp',
 )
 
+sfml = dependency('sfml-all')
+
 subdir('include')
 subdir('src')

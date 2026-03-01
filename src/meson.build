@@ -9,4 +9,5 @@ executable(
     sources: sources,
     install: true,
     include_directories: inc,
+    dependencies: sfml,
 )
