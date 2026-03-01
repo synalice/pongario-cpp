@@ -1,0 +1,85 @@
+# SPDX-FileCopyrightText: © 2026 Nikita Krasnov <nikita.nikita.krasnov@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: local
+    hooks:
+      - id: clang-format
+        name: format code with clang-format
+        language: system
+        entry: nix develop -c clang-format -i
+        types_or: [c++, header]
+        pass_filenames: true
+
+      - id: json-format
+        name: format JSON files with jq
+        language: system
+        entry: nix develop -c scripts/fmt-json.sh
+        types_or: [json]
+        pass_filenames: true
+
+      - id: meson-format
+        name: format meson.build files
+        language: system
+        entry: nix develop -c meson format -i
+        types_or: [meson]
+        pass_filenames: true
+
+      - id: nix-flake-check
+        name: lint flake.nix
+        language: system
+        entry: nix develop -c nix flake check
+        types_or: [nix]
+        pass_filenames: false
+
+      - id: nix-fmt
+        name: format flake.nix
+        language: system
+        entry: nix develop -c nix fmt
+        types_or: [nix]
+        pass_filenames: true
+
+      - id: meson-setup
+        name: setup builddir
+        language: system
+        entry: nix develop -c meson setup --reconfigure builddir/
+        types_or: [c++, header]
+        pass_filenames: false
+
+      - id: cppcheck
+        name: run cppcheck
+        language: system
+        entry: nix develop -c cppcheck
+        args:
+          - --enable=all
+          - --safety
+          - --platform=unspecified
+          - --error-exitcode=1
+          - --suppress=missingIncludeSystem
+          - --suppress=unmatchedSuppression
+          - --suppress=checkersReport
+          - --suppress=unusedFunction
+          - --project=builddir/compile_commands.json
+        types_or: [c++, header]
+        pass_filenames: false
+
+      - id: clang-tidy
+        name: run clang-tidy
+        language: system
+        entry: nix develop -c ninja -C builddir/ clang-tidy
+        types_or: [c++, header]
+        pass_filenames: false
+
+      - id: reuse
+        name: check compliance with REUSE Specification
+        language: system
+        entry: nix develop -c reuse lint
+        pass_filenames: false

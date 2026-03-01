@@ -1,0 +1,79 @@
+# SPDX-FileCopyrightText: © 2026 Nikita Krasnov <nikita.nikita.krasnov@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
+name: Project's CI
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build-native:
+    strategy:
+      matrix:
+        include:
+          - arch: x86_64-linux
+            os: ubuntu-24.04
+          - arch: aarch64-linux
+            os: ubuntu-24.04-arm
+    name: "Native build: ${{ matrix.arch }}"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Nix
+        uses: ./.github/actions/nix-setup
+
+      - name: Build $out output
+        run: |
+          nix build .#packages.${{ matrix.arch }}.default
+          tree result
+
+      - name: Build $dev output
+        run: |
+          nix build .#packages.${{ matrix.arch }}.default.dev
+          tree result-dev
+
+      - name: Build $doc output
+        run: |
+          nix build .#packages.${{ matrix.arch }}.default.doc
+          tree result-doc
+
+  cross-compile:
+    runs-on: ubuntu-24.04
+    name: "Cross-compile: x86_64-linux -> aarch64-linux"
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Nix
+        uses: ./.github/actions/nix-setup
+
+      - name: Cross-compile $out
+        run: |
+          ./scripts/cross-compile.sh aarch64-multiplatform out
+          tree result/
+
+      - name: Cross-compile $dev
+        run: |
+          ./scripts/cross-compile.sh aarch64-multiplatform dev
+          tree result-dev/
+
+  run-pre-commit-hooks:
+    name: Run pre-commit hooks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+
+      - name: Setup Nix
+        uses: ./.github/actions/nix-setup
+
+      - name: Configure build
+        run: meson setup builddir/
+
+      - name: Run pre-commit hooks
+        run: prek run --all-files

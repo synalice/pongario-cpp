@@ -1,0 +1,62 @@
+# SPDX-FileCopyrightText: © 2026 Nikita Krasnov <nikita.nikita.krasnov@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
+{
+  description = "Development environment for the project";
+
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    flake-utils.url = "github:numtide/flake-utils";
+  };
+
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+      in
+      {
+        formatter = pkgs.nixfmt-rfc-style;
+
+        packages.default = pkgs.callPackage ./nix/pongario-cpp.nix {
+          stdenv = pkgs.clangStdenv;
+        };
+
+        devShells.default =
+          pkgs.mkShell.override
+            {
+              stdenv = pkgs.clangStdenv;
+            }
+            {
+              inputsFrom = [ self.packages.${system}.default ];
+
+              packages = [
+                pkgs.bash
+                pkgs.mesonlsp
+                pkgs.cppcheck
+                pkgs.clang-analyzer
+                pkgs.clang-tools
+                pkgs.clang
+                pkgs.python3
+                pkgs.prek
+                pkgs.reuse
+                pkgs.tree
+                pkgs.jq
+
+                # pre-commit hooks from https://github.com/pre-commit/pre-commit-hooks repo invoke it
+                pkgs.uv
+              ];
+
+              shellHook = ''
+                prek install
+              '';
+            };
+      }
+    );
+}
