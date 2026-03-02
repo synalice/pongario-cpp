@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Keyboard.hpp>
@@ -62,7 +63,7 @@ void Application::process_physics(float delta) {
 }
 
 void Application::draw() {
-    m_window->clear();
+    m_window->clear(sf::Color::White);
     for (const auto &game_object : m_game_objects) {
         m_window->draw(*game_object);
     }
