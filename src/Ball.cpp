@@ -5,6 +5,7 @@
 #include "Ball.hpp"
 
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/System/Vector2.hpp>
@@ -46,6 +47,19 @@ void Ball::handle_input(float delta) {
 
 void Ball::set_window_size(sf::Vector2u window_size) {
     m_window_size = window_size;
+}
+
+sf::FloatRect Ball::get_bounds() const {
+    return m_circle.getGlobalBounds();
+}
+
+void Ball::bounce_vertical(float paddle_top) {
+    if (m_velocity.y > 0.0f) {
+        const float diameter = 2.0f * m_circle.getRadius();
+        m_position.y = paddle_top - diameter;
+        m_velocity.y = -m_velocity.y;
+        m_circle.setPosition(m_position);
+    }
 }
 
 void Ball::draw(sf::RenderTarget &target, sf::RenderStates states) const {

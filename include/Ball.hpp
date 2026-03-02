@@ -18,6 +18,8 @@ class Ball : public GameObject {
 
     void handle_input(float delta);
     void set_window_size(sf::Vector2u window_size);
+    sf::FloatRect get_bounds() const override;
+    void bounce_vertical(float paddle_top);
 
   private:
     sf::CircleShape m_circle;

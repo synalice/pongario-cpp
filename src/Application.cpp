@@ -19,7 +19,7 @@ namespace pongario {
 Application::Application()
     : m_window(std::make_unique<sf::RenderWindow>(
           sf::VideoMode({200, 200}),
-          "SFML works!",
+          "Pongario",
           sf::Style::None,
           sf::State::Fullscreen)) {
     m_game_objects.push_back(std::make_unique<Paddle>(m_window->getSize()));
@@ -32,15 +32,12 @@ void Application::run() {
     while (m_running && m_window->isOpen()) {
         this->handle_events();
 
-        // Get elapsed time
         const float delta = clock.restart().asSeconds();
         this->process_physics(delta);
 
-        m_window->clear();
-        for (const auto &game_object : m_game_objects) {
-            m_window->draw(*game_object);
-        }
-        m_window->display();
+        m_collision_manager.check_collisions(m_game_objects);
+
+        this->draw();
     }
 
     m_window->close();
@@ -62,6 +59,14 @@ void Application::process_physics(float delta) {
     for (const auto &game_object : m_game_objects) {
         game_object->process_physics(delta);
     }
+}
+
+void Application::draw() {
+    m_window->clear();
+    for (const auto &game_object : m_game_objects) {
+        m_window->draw(*game_object);
+    }
+    m_window->display();
 }
 
 } // namespace pongario

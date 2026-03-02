@@ -5,6 +5,7 @@
 #include "Paddle.hpp"
 
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -49,6 +50,10 @@ void Paddle::set_window_size(sf::Vector2u window_size) {
 
 void Paddle::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     target.draw(m_rectangle, states);
+}
+
+sf::FloatRect Paddle::get_bounds() const {
+    return m_rectangle.getGlobalBounds();
 }
 
 } // namespace pongario

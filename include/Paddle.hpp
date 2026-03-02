@@ -17,6 +17,7 @@ class Paddle : public GameObject {
 
     void handle_input(float delta);
     void set_window_size(sf::Vector2u window_size);
+    sf::FloatRect get_bounds() const override;
 
   private:
     sf::RectangleShape m_rectangle;

@@ -4,12 +4,14 @@
 
 #pragma once
 
+#include <SFML/Graphics/Rect.hpp>
+
 namespace pongario {
 
-class PhysicsProcessor {
+class Collidable {
   public:
-    virtual ~PhysicsProcessor() = default;
-    virtual void process_physics(float delta) = 0;
+    virtual ~Collidable() = default;
+    virtual sf::FloatRect get_bounds() const = 0;
 };
 
 } // namespace pongario

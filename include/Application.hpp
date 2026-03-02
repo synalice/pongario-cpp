@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "CollisionManager.hpp"
 #include "interface/GameObject.hpp"
 
 #include <SFML/Graphics/Drawable.hpp>
@@ -24,9 +25,11 @@ class Application {
     bool m_running{true};
     std::unique_ptr<sf::RenderWindow> m_window{nullptr};
     std::vector<std::unique_ptr<GameObject>> m_game_objects{};
+    CollisionManager m_collision_manager{};
 
     void handle_events();
     void process_physics(float delta);
+    void draw();
 };
 
 } // namespace pongario
