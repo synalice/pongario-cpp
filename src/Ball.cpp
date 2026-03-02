@@ -11,6 +11,8 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Keyboard.hpp>
 
+#include <cmath>
+
 namespace pongario {
 
 Ball::Ball(sf::Vector2u window_size) : m_window_size(window_size) {
@@ -53,11 +55,26 @@ sf::FloatRect Ball::get_bounds() const {
     return m_circle.getGlobalBounds();
 }
 
-void Ball::bounce_vertical(float paddle_top) {
+void Ball::bounce_vertical(const sf::FloatRect &paddle_bounds) {
     if (m_velocity.y > 0.0f) {
         const float diameter = 2.0f * m_circle.getRadius();
-        m_position.y = paddle_top - diameter;
-        m_velocity.y = -m_velocity.y;
+        const float radius = m_circle.getRadius();
+
+        m_position.y = paddle_bounds.position.y - diameter;
+
+        const float ball_center_x = m_position.x + radius;
+        const float paddle_center_x = paddle_bounds.position.x + paddle_bounds.size.x / 2.0f;
+        const float hit_offset = ball_center_x - paddle_center_x;
+        const float normalized_hit = hit_offset / (paddle_bounds.size.x / 2.0f);
+
+        const float current_speed = std::sqrt(m_velocity.x * m_velocity.x + m_velocity.y * m_velocity.y);
+
+        const float max_angle = 60.0f * 3.14159f / 180.0f;
+        const float bounce_angle = normalized_hit * max_angle;
+
+        m_velocity.x = current_speed * std::sin(bounce_angle);
+        m_velocity.y = -current_speed * std::cos(bounce_angle);
+
         m_circle.setPosition(m_position);
     }
 }

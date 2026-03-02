@@ -36,7 +36,7 @@ void CollisionManager::handle_ball_paddle_collision(Ball &ball, const Paddle &pa
     const sf::FloatRect paddle_bounds = paddle.get_bounds();
 
     if (ball_bounds.findIntersection(paddle_bounds).has_value()) {
-        ball.bounce_vertical(paddle_bounds.position.y);
+        ball.bounce_vertical(paddle_bounds);
     }
 }
 
