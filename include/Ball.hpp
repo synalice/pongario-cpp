@@ -25,6 +25,7 @@ class Ball : public GameObject {
     sf::Vector2u m_window_size;
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+    void process_physics(float delta) override;
 };
 
 } // namespace pongario

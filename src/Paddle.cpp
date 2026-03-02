@@ -13,13 +13,12 @@
 
 namespace pongario {
 
-Paddle::Paddle(sf::Vector2u window_size)
-    : m_window_size(window_size) {
+Paddle::Paddle(sf::Vector2u window_size) : m_window_size(window_size) {
     m_rectangle.setSize(sf::Vector2f(300.0f, 30.0f));
     m_rectangle.setFillColor(sf::Color::Green);
 
     m_position.x = static_cast<float>(m_window_size.x) / 2.0f;
-    m_position.y = static_cast<float>(m_window_size.y) / 2.0f;
+    m_position.y = static_cast<float>(m_window_size.y) / 1.1f;
     m_rectangle.setPosition(m_position);
 }
 
