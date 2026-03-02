@@ -17,6 +17,12 @@ class CollisionManager {
     CollisionManager();
     ~CollisionManager();
 
+    // Rule of 5: Since we have a custom destructor, we need to define copy/move operations
+    CollisionManager(const CollisionManager &) = delete;
+    CollisionManager &operator=(const CollisionManager &) = delete;
+    CollisionManager(CollisionManager &&) = default;
+    CollisionManager &operator=(CollisionManager &&) = default;
+
     void register_game_object(GameObject &object);
     void unregister_game_object(GameObject &object);
 
