@@ -41,8 +41,16 @@ void Application::run() {
 }
 
 void Application::handle_events() {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Escape)) {
-        m_running = false;
+    while (const auto event = m_window->pollEvent()) {
+        if (event->is<sf::Event::Closed>()) {
+            m_running = false;
+        } else if (const auto resized = event->getIf<sf::Event::Resized>()) {
+            m_paddle.set_window_size({resized->size.x, resized->size.y});
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Escape)) {
+            m_running = false;
+        }
     }
 }
 
