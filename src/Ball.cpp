@@ -19,6 +19,9 @@ Ball::Ball(sf::Vector2u window_size) : m_window_size(window_size) {
     m_position.x = static_cast<float>(m_window_size.x) / 2.0f;
     m_position.y = static_cast<float>(m_window_size.y) / 2.0f;
     m_circle.setPosition(m_position);
+
+    m_velocity.x = -800.0f;
+    m_velocity.y = -800.0f;
 }
 
 void Ball::handle_input(float delta) {
@@ -50,10 +53,27 @@ void Ball::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 }
 
 void Ball::process_physics(float delta) {
-    const float MOVE_SPEED = 800.0f;
+    m_position.x += m_velocity.x * delta;
+    m_position.y += m_velocity.y * delta;
 
-    m_position.x -= MOVE_SPEED * delta;
-    m_position.y -= MOVE_SPEED * delta;
+    const float radius = m_circle.getRadius();
+    const float diameter = 2.0f * radius;
+
+    if (m_position.x < 0.0f) {
+        m_position.x = 0.0f;
+        m_velocity.x = -m_velocity.x;
+    } else if (m_position.x + diameter > static_cast<float>(m_window_size.x)) {
+        m_position.x = static_cast<float>(m_window_size.x) - diameter;
+        m_velocity.x = -m_velocity.x;
+    }
+
+    if (m_position.y < 0.0f) {
+        m_position.y = 0.0f;
+        m_velocity.y = -m_velocity.y;
+    } else if (m_position.y + diameter > static_cast<float>(m_window_size.y)) {
+        m_position.y = static_cast<float>(m_window_size.y) - diameter;
+        m_velocity.y = -m_velocity.y;
+    }
 
     m_circle.setPosition(sf::Vector2f(m_position));
 }

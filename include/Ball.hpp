@@ -22,6 +22,7 @@ class Ball : public GameObject {
   private:
     sf::CircleShape m_circle;
     sf::Vector2f m_position;
+    sf::Vector2f m_velocity;
     sf::Vector2u m_window_size;
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
