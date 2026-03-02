@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "GameObject.hpp"
+#include "interface/GameObject.hpp"
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Drawable.hpp>

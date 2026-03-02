@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "PhysicsProcessor.hpp"
+#include "interface/PhysicsProcessor.hpp"
 
 #include <SFML/Graphics/Drawable.hpp>
 
