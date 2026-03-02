@@ -19,7 +19,8 @@ Application::Application()
           sf::VideoMode({200, 200}),
           "SFML works!",
           sf::Style::None,
-          sf::State::Fullscreen)) {}
+          sf::State::Fullscreen)),
+      m_paddle(m_window->getSize()) {}
 
 void Application::run() {
     sf::Clock clock;
@@ -32,7 +33,7 @@ void Application::run() {
         this->process_physics(delta);
 
         m_window->clear();
-        // window.draw(sprite);
+        m_window->draw(m_paddle);
         m_window->display();
     }
 
@@ -46,6 +47,7 @@ void Application::handle_events() {
 }
 
 void Application::process_physics(float delta) {
+    m_paddle.handle_input(delta);
 }
 
 } // namespace pongario

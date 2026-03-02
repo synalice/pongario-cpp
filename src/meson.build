@@ -2,4 +2,4 @@
 #
 # SPDX-License-Identifier: MIT
 
-sources = files('Application.cpp', 'main.cpp')
+sources = files('Application.cpp', 'Paddle.cpp', 'main.cpp')

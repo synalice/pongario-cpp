@@ -8,6 +8,8 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
+#include "Paddle.hpp"
+
 namespace pongario {
 
 class Application {
@@ -19,6 +21,7 @@ class Application {
   private:
     bool m_running{true};
     std::unique_ptr<sf::RenderWindow> m_window;
+    Paddle m_paddle;
 
     void handle_events();
     void process_physics(float delta);
