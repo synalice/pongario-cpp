@@ -4,13 +4,15 @@
 
 #pragma once
 
+#include "GameObject.hpp"
+
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
 namespace pongario {
 
-class Ball : public sf::Drawable {
+class Ball : public GameObject {
   public:
     explicit Ball(sf::Vector2u window_size);
 

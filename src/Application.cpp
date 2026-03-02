@@ -22,8 +22,8 @@ Application::Application()
           "SFML works!",
           sf::Style::None,
           sf::State::Fullscreen)) {
-    drawables.push_back(std::make_unique<Paddle>(m_window->getSize()));
-    drawables.push_back(std::make_unique<Ball>(m_window->getSize()));
+    m_game_objects.push_back(std::make_unique<Paddle>(m_window->getSize()));
+    m_game_objects.push_back(std::make_unique<Ball>(m_window->getSize()));
 }
 
 void Application::run() {
@@ -37,8 +37,8 @@ void Application::run() {
         this->process_physics(delta);
 
         m_window->clear();
-        for (const auto &drawable : drawables) {
-            m_window->draw(*drawable);
+        for (const auto &game_object : m_game_objects) {
+            m_window->draw(*game_object);
         }
         m_window->display();
     }
@@ -59,6 +59,9 @@ void Application::handle_events() {
 }
 
 void Application::process_physics(float delta) {
+    for (const auto &game_object : m_game_objects) {
+        game_object->process_physics(delta);
+    }
 }
 
 } // namespace pongario

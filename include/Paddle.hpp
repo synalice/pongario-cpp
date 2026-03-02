@@ -4,12 +4,14 @@
 
 #pragma once
 
+#include "GameObject.hpp"
+
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
 namespace pongario {
 
-class Paddle : public sf::Drawable {
+class Paddle : public GameObject {
   public:
     explicit Paddle(sf::Vector2u window_size);
 
@@ -22,6 +24,7 @@ class Paddle : public sf::Drawable {
     sf::Vector2u m_window_size;
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+    void process_physics(float delta) override;
 };
 
 } // namespace pongario

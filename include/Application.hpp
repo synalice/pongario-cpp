@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "GameObject.hpp"
+
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -21,7 +23,7 @@ class Application {
   private:
     bool m_running{true};
     std::unique_ptr<sf::RenderWindow> m_window{nullptr};
-    std::vector<std::unique_ptr<sf::Drawable>> drawables{};
+    std::vector<std::unique_ptr<GameObject>> m_game_objects{};
 
     void handle_events();
     void process_physics(float delta);

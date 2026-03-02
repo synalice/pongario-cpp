@@ -23,7 +23,7 @@ Paddle::Paddle(sf::Vector2u window_size)
     m_rectangle.setPosition(m_position);
 }
 
-void Paddle::handle_input(float delta) {
+void Paddle::process_physics(float delta) {
     const float move_speed = 1000.0f;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A)) {
