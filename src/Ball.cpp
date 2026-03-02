@@ -83,6 +83,32 @@ void Ball::bounce_vertical(const sf::FloatRect &paddle_bounds) {
     }
 }
 
+void Ball::bounce_brick(const sf::FloatRect &brick_bounds) {
+    const float radius = m_circle.getRadius();
+    const float ball_center_x = m_position.x + radius;
+    const float ball_center_y = m_position.y + radius;
+
+    const float brick_center_x = brick_bounds.position.x + brick_bounds.size.x / 2.0f;
+    const float brick_center_y = brick_bounds.position.y + brick_bounds.size.y / 2.0f;
+
+    const float dx = ball_center_x - brick_center_x;
+    const float dy = ball_center_y - brick_center_y;
+
+    const float width_half = brick_bounds.size.x / 2.0f;
+    const float height_half = brick_bounds.size.y / 2.0f;
+
+    const float cross_width = width_half * std::abs(dy);
+    const float cross_height = height_half * std::abs(dx);
+
+    if (cross_width > cross_height) {
+        m_velocity.x = -m_velocity.x;
+    } else {
+        m_velocity.y = -m_velocity.y;
+    }
+
+    m_on_brick_bounce.emit(brick_bounds);
+}
+
 void Ball::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     target.draw(m_circle, states);
 }
@@ -126,6 +152,10 @@ Signal<> &Ball::wall_bounce_signal() {
 
 Signal<const sf::FloatRect &> &Ball::paddle_bounce_signal() {
     return m_on_paddle_bounce;
+}
+
+Signal<const sf::FloatRect &> &Ball::brick_bounce_signal() {
+    return m_on_brick_bounce;
 }
 
 } // namespace pongario

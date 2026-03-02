@@ -4,6 +4,7 @@
 
 #include "Application.hpp"
 #include "Ball.hpp"
+#include "Grid.hpp"
 #include "Paddle.hpp"
 
 #include <iostream>
@@ -40,11 +41,38 @@ Application::Application()
                   << paddle_bounds.position.y << ")" << std::endl;
     });
 
+    ball->brick_bounce_signal().connect([](const sf::FloatRect &brick_bounds) {
+        std::cout << "Brick hit at position: ("
+                  << brick_bounds.position.x << ", "
+                  << brick_bounds.position.y << ")" << std::endl;
+    });
+
     m_game_objects.push_back(std::move(ball));
 
-    // Register all game objects with the collision manager
+    const GridConfig grid_config{
+        .window_size = m_window->getSize(),
+        .rows = 5,
+        .columns = 8,
+        .brick_width = 250.0f,
+        .brick_height = 100.0f,
+        .horizontal_gap = 90.0f,
+        .vertical_gap = 100.0f};
+
+    auto grid = std::make_unique<Grid>(grid_config);
+
+    // Register each brick individually with the collision manager
+    for (auto brick_ref : grid->get_bricks()) {
+        m_collision_manager.register_game_object(brick_ref.get());
+    }
+
+    m_game_objects.push_back(std::move(grid));
+
+    // Register paddle and ball with the collision manager
     for (auto &game_object : m_game_objects) {
-        m_collision_manager.register_game_object(*game_object);
+        // Skip Grid itself - only its bricks are registered
+        if (dynamic_cast<Grid *>(game_object.get()) == nullptr) {
+            m_collision_manager.register_game_object(*game_object);
+        }
     }
 }
 

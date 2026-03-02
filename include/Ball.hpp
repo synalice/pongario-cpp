@@ -21,9 +21,11 @@ class Ball : public GameObject {
     void set_window_size(sf::Vector2u window_size);
     sf::FloatRect get_bounds() const override;
     void bounce_vertical(const sf::FloatRect &paddle_bounds);
+    void bounce_brick(const sf::FloatRect &brick_bounds);
 
     Signal<> &wall_bounce_signal();
     Signal<const sf::FloatRect &> &paddle_bounce_signal();
+    Signal<const sf::FloatRect &> &brick_bounce_signal();
 
   private:
     sf::CircleShape m_circle{};
@@ -32,6 +34,7 @@ class Ball : public GameObject {
     sf::Vector2u m_window_size{};
     Signal<> m_on_wall_bounce{};
     Signal<const sf::FloatRect &> m_on_paddle_bounce{};
+    Signal<const sf::FloatRect &> m_on_brick_bounce{};
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     void process_physics(float delta) override;

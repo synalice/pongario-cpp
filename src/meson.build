@@ -5,7 +5,9 @@
 sources = files(
     'Application.cpp',
     'Ball.cpp',
+    'Brick.cpp',
     'CollisionManager.cpp',
+    'Grid.cpp',
     'Paddle.cpp',
     'interface/GameObject.cpp',
     'main.cpp',
