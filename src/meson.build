@@ -2,12 +2,4 @@
 #
 # SPDX-License-Identifier: MIT
 
-sources = files('main.cpp')
-
-executable(
-    meson.project_name(),
-    sources: sources,
-    install: true,
-    include_directories: inc,
-    dependencies: sfml,
-)
+sources = files('Application.cpp', 'main.cpp')

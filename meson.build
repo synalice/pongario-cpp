@@ -53,3 +53,11 @@ sfml = dependency('sfml-all')
 
 subdir('include')
 subdir('src')
+
+executable(
+    meson.project_name(),
+    sources: sources,
+    install: true,
+    include_directories: inc,
+    dependencies: sfml,
+)
