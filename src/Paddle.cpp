@@ -35,8 +35,9 @@ void Paddle::handle_input(float delta) {
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D)) {
         m_position.x += move_speed * delta;
-        if (m_position.x > static_cast<float>(m_window_size.x)) {
-            m_position.x = static_cast<float>(m_window_size.x);
+        const float max_paddle_position = static_cast<float>(m_window_size.x) - m_rectangle.getSize().x;
+        if (m_position.x > static_cast<float>(max_paddle_position)) {
+            m_position.x = static_cast<float>(max_paddle_position);
         }
     }
 
