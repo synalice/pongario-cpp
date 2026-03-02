@@ -8,6 +8,7 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/System/Angle.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Keyboard.hpp>
 
@@ -69,11 +70,11 @@ void Ball::bounce_vertical(const sf::FloatRect &paddle_bounds) {
 
         const float current_speed = std::sqrt(m_velocity.x * m_velocity.x + m_velocity.y * m_velocity.y);
 
-        const float max_angle = 60.0f * 3.14159f / 180.0f;
-        const float bounce_angle = normalized_hit * max_angle;
+        const sf::Angle max_angle = sf::degrees(60.0f);
+        const sf::Angle bounce_angle = max_angle * normalized_hit;
 
-        m_velocity.x = current_speed * std::sin(bounce_angle);
-        m_velocity.y = -current_speed * std::cos(bounce_angle);
+        m_velocity.x = current_speed * std::sin(bounce_angle.asRadians());
+        m_velocity.y = -current_speed * std::cos(bounce_angle.asRadians());
 
         m_circle.setPosition(m_position);
     }
