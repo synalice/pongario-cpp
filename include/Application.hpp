@@ -4,11 +4,11 @@
 
 #pragma once
 
-#include <memory>
-
+#include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
-#include "Paddle.hpp"
+#include <memory>
+#include <vector>
 
 namespace pongario {
 
@@ -20,8 +20,8 @@ class Application {
 
   private:
     bool m_running{true};
-    std::unique_ptr<sf::RenderWindow> m_window;
-    Paddle m_paddle;
+    std::unique_ptr<sf::RenderWindow> m_window{nullptr};
+    std::vector<std::unique_ptr<sf::Drawable>> drawables{};
 
     void handle_events();
     void process_physics(float delta);

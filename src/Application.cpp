@@ -3,6 +3,8 @@
 // SPDX-License-Identifier: MIT
 
 #include "Application.hpp"
+#include "Ball.hpp"
+#include "Paddle.hpp"
 
 #include <memory>
 
@@ -19,8 +21,10 @@ Application::Application()
           sf::VideoMode({200, 200}),
           "SFML works!",
           sf::Style::None,
-          sf::State::Fullscreen)),
-      m_paddle(m_window->getSize()) {}
+          sf::State::Fullscreen)) {
+    drawables.push_back(std::make_unique<Paddle>(m_window->getSize()));
+    drawables.push_back(std::make_unique<Ball>(m_window->getSize()));
+}
 
 void Application::run() {
     sf::Clock clock;
@@ -33,7 +37,9 @@ void Application::run() {
         this->process_physics(delta);
 
         m_window->clear();
-        m_window->draw(m_paddle);
+        for (const auto &drawable : drawables) {
+            m_window->draw(*drawable);
+        }
         m_window->display();
     }
 
@@ -44,8 +50,6 @@ void Application::handle_events() {
     while (const auto event = m_window->pollEvent()) {
         if (event->is<sf::Event::Closed>()) {
             m_running = false;
-        } else if (const auto resized = event->getIf<sf::Event::Resized>()) {
-            m_paddle.set_window_size({resized->size.x, resized->size.y});
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Escape)) {
@@ -55,7 +59,6 @@ void Application::handle_events() {
 }
 
 void Application::process_physics(float delta) {
-    m_paddle.handle_input(delta);
 }
 
 } // namespace pongario
