@@ -20,9 +20,9 @@ class Paddle : public GameObject {
     sf::FloatRect get_bounds() const override;
 
   private:
-    sf::RectangleShape m_rectangle;
-    sf::Vector2f m_position;
-    sf::Vector2u m_window_size;
+    sf::RectangleShape m_rectangle{};
+    sf::Vector2f m_position{};
+    sf::Vector2u m_window_size{};
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     void process_physics(float delta) override;
