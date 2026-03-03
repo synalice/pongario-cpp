@@ -10,6 +10,7 @@
 #include "interface/GameObject.hpp"
 
 #include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include <memory>
@@ -31,6 +32,7 @@ class Application {
     CollisionManager m_collision_manager{};
     std::shared_ptr<Paddle> paddle{};
     std::shared_ptr<Ball> ball{};
+    sf::Font m_font{};
 
     void handle_events();
     void process_physics(float delta);

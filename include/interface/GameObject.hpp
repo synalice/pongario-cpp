@@ -14,8 +14,6 @@ namespace pongario {
 
 class GameObject : public sf::Drawable, public PhysicsProcessor, public Collidable {
   public:
-    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override = 0;
-
     ~GameObject() override = default;
 
     Signal<GameObject &, const sf::FloatRect &> &collision_signal();

@@ -4,15 +4,19 @@
 
 #include "Application.hpp"
 #include "Ball.hpp"
+#include "GameOverScreen.hpp"
 #include "Grid.hpp"
 #include "Paddle.hpp"
 
 #include <memory>
+#include <stdexcept>
 #include <utility>
 
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Keyboard.hpp>
@@ -28,6 +32,13 @@ Application::Application()
           sf::Style::None,
           sf::State::Fullscreen)),
       paddle(std::make_shared<Paddle>(m_window->getSize())) {
+    if (!m_font.openFromFile("assets/GentiumBookPlus-Regular.ttf")) {
+        // Handle font loading error
+        throw std::runtime_error("Failed to load font");
+    }
+
+    auto game_over_screen = std::make_shared<GameOverScreen>(m_font);
+
     ball = std::make_shared<Ball>(m_window->getSize(), this->calculate_ball_resting_position());
 
     ball->die_signal().connect([this]() {
@@ -52,6 +63,7 @@ Application::Application()
 
     m_game_objects.push_back(ball);
     m_game_objects.push_back(paddle);
+    m_game_objects.push_back(game_over_screen);
 
     const GridConfig grid_config{
         .window_size = m_window->getSize(),
