@@ -21,12 +21,7 @@ Ball::Ball(sf::Vector2u window_size) : m_window_size(window_size) {
     m_circle.setRadius(50.0f);
     m_circle.setFillColor(sf::Color::Red);
 
-    m_position.x = static_cast<float>(m_window_size.x) / 2.0f;
-    m_position.y = static_cast<float>(m_window_size.y) / 2.0f;
-    m_circle.setPosition(m_position);
-
-    m_velocity.x = -800.0f;
-    m_velocity.y = -800.0f;
+    this->reset();
 }
 
 void Ball::handle_input(float delta) {
@@ -175,6 +170,15 @@ void Ball::process_physics(float delta) {
 
 Signal<> &Ball::die_signal() {
     return m_on_die;
+}
+
+void Ball::reset() {
+    m_position.x = static_cast<float>(m_window_size.x) / 2.0f;
+    m_position.y = static_cast<float>(m_window_size.y) / 2.0f;
+    m_circle.setPosition(m_position);
+
+    m_velocity.x = -800.0f;
+    m_velocity.y = -800.0f;
 }
 
 } // namespace pongario

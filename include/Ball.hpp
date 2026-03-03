@@ -21,6 +21,7 @@ class Ball : public GameObject {
     void set_window_size(sf::Vector2u window_size);
     void bounce_vertical(const sf::FloatRect &paddle_bounds);
     void bounce_brick(const sf::FloatRect &brick_bounds);
+    void reset();
     sf::FloatRect get_bounds() const override;
 
     Signal<> &die_signal();

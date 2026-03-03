@@ -35,6 +35,7 @@ class Application {
     void handle_events();
     void process_physics(float delta);
     void draw();
+    void reset();
 };
 
 } // namespace pongario

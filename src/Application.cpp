@@ -29,6 +29,7 @@ Application::Application()
       paddle(std::make_shared<Paddle>(m_window->getSize())) {
     ball->die_signal().connect([this]() {
         lifes -= 1;
+        this->reset();
         if (lifes == 0) {
             m_running = false;
         }
@@ -103,6 +104,11 @@ void Application::draw() {
         m_window->draw(*game_object);
     }
     m_window->display();
+}
+
+void Application::reset() {
+    ball->reset();
+    paddle->reset();
 }
 
 } // namespace pongario
