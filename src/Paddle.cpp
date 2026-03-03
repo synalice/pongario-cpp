@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 #include "Paddle.hpp"
+#include "interface/Signal.hpp"
 
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Rect.hpp>
@@ -25,6 +26,7 @@ void Paddle::process_physics(float delta) {
     const float move_speed = 1000.0f;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A)) {
+        m_on_moved_left.emit();
         m_position.x -= move_speed * delta;
         if (m_position.x < 0.0f) {
             m_position.x = 0.0f;
@@ -32,6 +34,7 @@ void Paddle::process_physics(float delta) {
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D)) {
+        m_on_moved_right.emit();
         m_position.x += move_speed * delta;
         const float max_paddle_position = static_cast<float>(m_window_size.x) - m_rectangle.getSize().x;
         if (m_position.x > static_cast<float>(max_paddle_position)) {
@@ -40,8 +43,6 @@ void Paddle::process_physics(float delta) {
     }
 
     m_rectangle.setPosition(sf::Vector2f(m_position));
-
-    // Emit collision signal after position update
 }
 
 void Paddle::set_window_size(sf::Vector2u window_size) {
@@ -65,6 +66,14 @@ void Paddle::reset() {
 
 sf::Vector2f Paddle::get_position() const {
     return m_position;
+}
+
+Signal<> &Paddle::moved_left_signal() {
+    return m_on_moved_left;
+}
+
+Signal<> &Paddle::moved_right_signal() {
+    return m_on_moved_right;
 }
 
 } // namespace pongario

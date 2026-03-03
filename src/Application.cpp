@@ -27,13 +27,26 @@ Application::Application()
           "Pongario",
           sf::Style::None,
           sf::State::Fullscreen)),
-      paddle(std::make_shared<Paddle>(m_window->getSize())),
-      ball(std::make_shared<Ball>(m_window->getSize())) {
+      paddle(std::make_shared<Paddle>(m_window->getSize())) {
+    ball = std::make_shared<Ball>(m_window->getSize(), this->calculate_ball_resting_position());
+
     ball->die_signal().connect([this]() {
         lifes -= 1;
         this->reset();
         if (lifes == 0) {
             m_running = false;
+        }
+    });
+
+    paddle->moved_left_signal().connect([this]() {
+        if (!ball->is_moving()) {
+            ball->set_velocity(sf::Vector2f{-100, -1000});
+        }
+    });
+
+    paddle->moved_right_signal().connect([this]() {
+        if (!ball->is_moving()) {
+            ball->set_velocity(sf::Vector2f{100, -1000});
         }
     });
 
@@ -112,19 +125,20 @@ void Application::draw() {
 
 void Application::reset() {
     paddle->reset();
+    ball->reset();
+}
 
+sf::Vector2f Application::calculate_ball_resting_position() {
     const sf::FloatRect paddle_bounds = paddle->get_bounds();
 
-    sf::Vector2f ball_reset_position{};
-    ball_reset_position.x = paddle_bounds.position.x + (paddle_bounds.size.x / 2.0f) - Ball::RADIUS;
-    ball_reset_position.y = paddle_bounds.position.y - (2.0f * Ball::RADIUS);
+    sf::Vector2f ball_resting_position{};
+    ball_resting_position.x = paddle_bounds.position.x + (paddle_bounds.size.x / 2.0f) - Ball::RADIUS;
+    ball_resting_position.y = paddle_bounds.position.y - (2.0f * Ball::RADIUS);
 
-    if (ball_reset_position.y < 0.0f) {
-        ball_reset_position.y = 0.0f;
+    if (ball_resting_position.y < 0.0f) {
+        ball_resting_position.y = 0.0f;
     }
-
-    ball->set_reset_position(ball_reset_position);
-    ball->reset();
+    return ball_resting_position;
 }
 
 } // namespace pongario

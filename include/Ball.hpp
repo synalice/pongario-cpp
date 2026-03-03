@@ -18,23 +18,25 @@ class Ball : public GameObject {
   public:
     static constexpr float RADIUS = 50.0f;
 
-    explicit Ball(sf::Vector2u window_size);
+    explicit Ball(sf::Vector2u window_size, sf::Vector2f resting_position);
 
     void handle_input(float delta);
     void set_window_size(sf::Vector2u window_size);
     void bounce_vertical(const sf::FloatRect &paddle_bounds);
     void bounce_brick(const sf::FloatRect &brick_bounds);
-    void set_reset_position(sf::Vector2f reset_position);
     void reset();
+    void set_velocity(sf::Vector2f velocity);
+    bool is_moving() const;
     sf::FloatRect get_bounds() const override;
-
     Signal<> &die_signal();
+    sf::Vector2f get_velocity() const;
 
   private:
+    bool m_is_moving{};
     sf::CircleShape m_circle{};
     sf::Vector2f m_position{};
-    sf::Vector2f m_reset_position{};
     sf::Vector2f m_velocity{};
+    sf::Vector2f m_resting_position{};
     sf::Vector2u m_window_size{};
     Signal<> m_on_die{};
 

@@ -17,7 +17,7 @@
 
 namespace pongario {
 
-Ball::Ball(sf::Vector2u window_size) : m_window_size(window_size) {
+Ball::Ball(sf::Vector2u window_size, sf::Vector2f resting_position) : m_resting_position(resting_position), m_window_size(window_size) {
     m_circle.setRadius(RADIUS);
     m_circle.setFillColor(sf::Color::Red);
 
@@ -46,10 +46,6 @@ void Ball::handle_input(float delta) {
 
 void Ball::set_window_size(sf::Vector2u window_size) {
     m_window_size = window_size;
-}
-
-void Ball::set_reset_position(sf::Vector2f reset_position) {
-    m_reset_position = reset_position;
 }
 
 sf::FloatRect Ball::get_bounds() const {
@@ -168,7 +164,7 @@ void Ball::process_physics(float delta) {
 
     m_circle.setPosition(sf::Vector2f(m_position));
 
-    // Emit collision signal after position update
+    // Process collision after position update
     emit_collision_signal();
 }
 
@@ -177,8 +173,25 @@ Signal<> &Ball::die_signal() {
 }
 
 void Ball::reset() {
-    m_position = m_reset_position;
+    m_position = m_resting_position;
     m_circle.setPosition(m_position);
+    m_velocity = sf::Vector2f{0, 0};
+    m_is_moving = false;
+}
+
+sf::Vector2f Ball::get_velocity() const {
+    return m_velocity;
+}
+
+void Ball::set_velocity(sf::Vector2f velocity) {
+    m_velocity = velocity;
+    if (velocity != sf::Vector2f{0, 0}) {
+        m_is_moving = true;
+    }
+}
+
+bool Ball::is_moving() const {
+    return m_is_moving;
 }
 
 } // namespace pongario

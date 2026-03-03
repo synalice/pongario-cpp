@@ -36,6 +36,7 @@ class Application {
     void process_physics(float delta);
     void draw();
     void reset();
+    sf::Vector2f calculate_ball_resting_position();
 };
 
 } // namespace pongario
