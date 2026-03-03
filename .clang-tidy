@@ -14,3 +14,5 @@ Checks:
   - clang-analyzer-*,
   # Disabled because `fprintf_s` is not available on all platforms.
   - -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling
+  # Disabled because fixed seed is intentional for consistent brick generation
+  - -cert-msc51-cpp

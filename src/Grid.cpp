@@ -12,10 +12,12 @@
 #include <SFML/System/Vector2.hpp>
 
 #include <algorithm>
+#include <array>
 #include <cstddef>
 #include <functional>
 #include <iterator>
 #include <memory>
+#include <random>
 #include <vector>
 
 namespace pongario {
@@ -26,7 +28,15 @@ Grid::Grid(const GridConfig &config)
 }
 
 void Grid::generate_bricks() {
-    auto texture = std::make_shared<sf::Texture>("assets/block_brown.png");
+    std::array textures = {
+        std::make_shared<sf::Texture>("assets/block_brown.png"),
+        std::make_shared<sf::Texture>("assets/block_blue.png"),
+        std::make_shared<sf::Texture>("assets/block_green.png"),
+        std::make_shared<sf::Texture>("assets/block_pink.png"),
+    };
+
+    std::mt19937 gen(42); // Fixed seed for consistent random number generation, NOLINT
+    std::uniform_int_distribution<size_t> dist(0, textures.size() - 1);
 
     const float total_grid_width = static_cast<float>(m_grid_config.columns) * m_grid_config.brick_width +
                                    static_cast<float>(m_grid_config.columns - 1) * m_grid_config.horizontal_gap;
@@ -42,7 +52,7 @@ void Grid::generate_bricks() {
             const BrickConfig config{
                 .position = sf::Vector2f(x, y),
                 .scale = {6, 6},
-                .texture = texture,
+                .texture = textures[dist(gen)],
             };
 
             m_bricks.push_back(std::make_unique<Brick>(config));
