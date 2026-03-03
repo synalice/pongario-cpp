@@ -84,28 +84,61 @@ void Ball::bounce_vertical(const sf::FloatRect &paddle_bounds) {
 }
 
 void Ball::bounce_brick(const sf::FloatRect &brick_bounds) {
-    const float radius = m_circle.getRadius();
-    const float ball_center_x = m_position.x + radius;
-    const float ball_center_y = m_position.y + radius;
+    const sf::FloatRect ball_bounds = get_bounds();
+    const auto intersection = ball_bounds.findIntersection(brick_bounds);
 
-    const float brick_center_x = brick_bounds.position.x + brick_bounds.size.x / 2.0f;
-    const float brick_center_y = brick_bounds.position.y + brick_bounds.size.y / 2.0f;
+    if (!intersection.has_value()) {
+        return;
+    }
 
-    const float dx = ball_center_x - brick_center_x;
-    const float dy = ball_center_y - brick_center_y;
+    // How much the ball is penetrating the brick on each axis
+    const sf::Vector2f overlap = intersection->size;
 
-    const float width_half = brick_bounds.size.x / 2.0f;
-    const float height_half = brick_bounds.size.y / 2.0f;
+    // Determine whether to resolve collision horizontally or vertically
+    bool resolve_x;
 
-    const float cross_width = width_half * std::abs(dy);
-    const float cross_height = height_half * std::abs(dx);
+    if (overlap.x < overlap.y) {
+        // Ball is penetrating more vertically than horizontally
+        // This means it hit a vertical side (left/right), so resolve horizontally
+        resolve_x = true;
+    } else if (overlap.x > overlap.y) {
+        // Ball is penetrating more horizontally than vertically
+        // This means it hit a horizontal side (top/bottom), so resolve vertically
+        resolve_x = false;
+    } else {
+        // Perfect corner hit - overlaps are equal
+        // Use velocity magnitude as tie-breaker
+        if (std::abs(m_velocity.x) >= std::abs(m_velocity.y)) {
+            // Moving more horizontally, treat as side hit
+            resolve_x = true;
+        } else {
+            // Moving more vertically, treat as top/bottom hit
+            resolve_x = false;
+        }
+    }
 
-    if (cross_width > cross_height) {
+    if (resolve_x) {
+        if (m_velocity.x > 0.0f) {
+            // Ball moving right hit the left side of brick
+            m_position.x = brick_bounds.position.x - ball_bounds.size.x;
+        } else {
+            // Ball moving left hit the right side of brick
+            m_position.x = brick_bounds.position.x + brick_bounds.size.x;
+        }
         m_velocity.x = -m_velocity.x;
     } else {
+        if (m_velocity.y > 0.0f) {
+            // Ball moving down hit the top side of brick
+            m_position.y = brick_bounds.position.y - ball_bounds.size.y;
+        } else {
+            // Ball moving up hit the bottom side of brick
+            m_position.y = brick_bounds.position.y + brick_bounds.size.y;
+        }
+        // Reverse vertical velocity
         m_velocity.y = -m_velocity.y;
     }
 
+    m_circle.setPosition(m_position);
     m_on_brick_bounce.emit(brick_bounds);
 }
 
