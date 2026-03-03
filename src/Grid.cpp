@@ -11,11 +11,8 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Vector2.hpp>
 
-#include <algorithm>
 #include <array>
 #include <cstddef>
-#include <functional>
-#include <iterator>
 #include <memory>
 #include <random>
 #include <vector>
@@ -55,17 +52,13 @@ void Grid::generate_bricks() {
                 .texture = textures[dist(gen)],
             };
 
-            m_bricks.push_back(std::make_unique<Brick>(config));
+            m_bricks.push_back(std::make_shared<Brick>(config));
         }
     }
 }
 
-std::vector<std::reference_wrapper<Brick>> Grid::get_bricks() {
-    std::vector<std::reference_wrapper<Brick>> brick_refs;
-    brick_refs.reserve(m_bricks.size());
-    std::transform(m_bricks.begin(), m_bricks.end(), std::back_inserter(brick_refs),
-                   [](std::unique_ptr<Brick> &brick) { return std::ref(*brick); });
-    return brick_refs;
+const std::vector<std::shared_ptr<Brick>> &Grid::get_bricks() const {
+    return m_bricks;
 }
 
 sf::FloatRect Grid::get_bounds() const {

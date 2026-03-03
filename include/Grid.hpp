@@ -11,7 +11,6 @@
 #include <SFML/System/Vector2.hpp>
 
 #include <cstddef>
-#include <functional>
 #include <memory>
 #include <vector>
 
@@ -31,11 +30,11 @@ class Grid : public GameObject {
   public:
     explicit Grid(const GridConfig &config);
 
-    std::vector<std::reference_wrapper<Brick>> get_bricks();
+    const std::vector<std::shared_ptr<Brick>> &get_bricks() const;
     sf::FloatRect get_bounds() const override;
 
   private:
-    std::vector<std::unique_ptr<Brick>> m_bricks{};
+    std::vector<std::shared_ptr<Brick>> m_bricks{};
     sf::Vector2u m_window_size{};
     GridConfig m_grid_config{};
 

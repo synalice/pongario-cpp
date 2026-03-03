@@ -79,8 +79,8 @@ Application::Application()
     auto grid = std::make_unique<Grid>(grid_config);
 
     // Register each brick individually with the collision manager
-    for (auto brick_ref : grid->get_bricks()) {
-        m_collision_manager.register_game_object(brick_ref.get());
+    for (auto brick : grid->get_bricks()) {
+        m_collision_manager.register_game_object(brick);
     }
 
     m_game_objects.push_back(std::move(grid));
@@ -89,7 +89,7 @@ Application::Application()
     for (auto &game_object : m_game_objects) {
         // Skip Grid itself - only its bricks are registered
         if (dynamic_cast<Grid *>(game_object.get()) == nullptr) {
-            m_collision_manager.register_game_object(*game_object);
+            m_collision_manager.register_game_object(game_object);
         }
     }
 

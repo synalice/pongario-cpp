@@ -7,6 +7,7 @@
 #include "interface/GameObject.hpp"
 #include "interface/Signal.hpp"
 
+#include <memory>
 #include <unordered_set>
 #include <vector>
 
@@ -23,14 +24,14 @@ class CollisionManager {
     CollisionManager(CollisionManager &&) = default;
     CollisionManager &operator=(CollisionManager &&) = default;
 
-    void register_game_object(GameObject &object);
-    void unregister_game_object(GameObject &object);
+    void register_game_object(std::shared_ptr<GameObject> object);
+    void unregister_game_object(std::shared_ptr<GameObject> object);
 
   private:
     void on_collision_signal(GameObject &object, const sf::FloatRect &bounds);
     void check_collision_with_others(GameObject &source, const sf::FloatRect &source_bounds);
 
-    std::vector<GameObject *> m_registered_objects{};
+    std::vector<std::shared_ptr<GameObject>> m_registered_objects{};
     std::unordered_set<Signal<GameObject &, const sf::FloatRect &>::ConnectionId> m_connections{};
 };
 
