@@ -24,11 +24,9 @@ Application::Application()
           sf::VideoMode({200, 200}),
           "Pongario",
           sf::Style::None,
-          sf::State::Fullscreen)) {
-    m_game_objects.push_back(std::make_unique<Paddle>(m_window->getSize()));
-
-    auto ball = std::make_unique<Ball>(m_window->getSize());
-
+          sf::State::Fullscreen)),
+      ball(std::make_shared<Ball>(m_window->getSize())),
+      paddle(std::make_shared<Paddle>(m_window->getSize())) {
     ball->die_signal().connect([this]() {
         lifes -= 1;
         if (lifes == 0) {
@@ -36,7 +34,8 @@ Application::Application()
         }
     });
 
-    m_game_objects.push_back(std::move(ball));
+    m_game_objects.push_back(ball);
+    m_game_objects.push_back(paddle);
 
     const GridConfig grid_config{
         .window_size = m_window->getSize(),
