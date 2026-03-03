@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 #include "Ball.hpp"
+#include "interface/Signal.hpp"
 
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Rect.hpp>
@@ -163,12 +164,17 @@ void Ball::process_physics(float delta) {
     } else if (m_position.y + diameter > static_cast<float>(m_window_size.y)) {
         m_position.y = static_cast<float>(m_window_size.y) - diameter;
         m_velocity.y = -m_velocity.y;
+        m_on_die.emit();
     }
 
     m_circle.setPosition(sf::Vector2f(m_position));
 
     // Emit collision signal after position update
     emit_collision_signal();
+}
+
+Signal<> &Ball::die_signal() {
+    return m_on_die;
 }
 
 } // namespace pongario

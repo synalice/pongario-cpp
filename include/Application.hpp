@@ -22,6 +22,7 @@ class Application {
     void run();
 
   private:
+    int lifes{3};
     bool m_running{true};
     std::unique_ptr<sf::RenderWindow> m_window{nullptr};
     std::vector<std::unique_ptr<GameObject>> m_game_objects{};

@@ -19,15 +19,18 @@ class Ball : public GameObject {
 
     void handle_input(float delta);
     void set_window_size(sf::Vector2u window_size);
-    sf::FloatRect get_bounds() const override;
     void bounce_vertical(const sf::FloatRect &paddle_bounds);
     void bounce_brick(const sf::FloatRect &brick_bounds);
+    sf::FloatRect get_bounds() const override;
+
+    Signal<> &die_signal();
 
   private:
     sf::CircleShape m_circle{};
     sf::Vector2f m_position{};
     sf::Vector2f m_velocity{};
     sf::Vector2u m_window_size{};
+    Signal<> m_on_die{};
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     void process_physics(float delta) override;

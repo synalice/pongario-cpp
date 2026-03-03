@@ -29,6 +29,13 @@ Application::Application()
 
     auto ball = std::make_unique<Ball>(m_window->getSize());
 
+    ball->die_signal().connect([this]() {
+        lifes -= 1;
+        if (lifes == 0) {
+            m_running = false;
+        }
+    });
+
     m_game_objects.push_back(std::move(ball));
 
     const GridConfig grid_config{
