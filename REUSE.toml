@@ -24,3 +24,8 @@ SPDX-License-Identifier = "MIT"
 path = "docs/Doxyfile.in"
 SPDX-FileCopyrightText = "© 2026 Nikita Krasnov <nikita.nikita.krasnov@gmail.com>"
 SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = "assets/GentiumBookPlus-Regular.ttf"
+SPDX-FileCopyrightText = "© 2003-2022 SIL International (http://www.sil.org/)"
+SPDX-License-Identifier = "OFL-1.1"
