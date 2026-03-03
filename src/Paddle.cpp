@@ -5,20 +5,23 @@
 #include "Paddle.hpp"
 #include "interface/Signal.hpp"
 
-#include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Rect.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/VideoMode.hpp>
 
 namespace pongario {
 
-Paddle::Paddle() : m_window_size(sf::VideoMode::getDesktopMode().size) {
-    m_rectangle.setSize(sf::Vector2f(300.0f, 30.0f));
-    m_rectangle.setFillColor(sf::Color::Green);
+Paddle::Paddle()
+    : m_window_size(sf::VideoMode::getDesktopMode().size),
+      m_texture("assets/paddle.png"), m_sprite(m_texture) {
+    m_texture.setSmooth(false);
+
+    m_sprite.setScale({4, 4});
 
     this->reset();
 }
@@ -37,13 +40,13 @@ void Paddle::process_physics(float delta) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D)) {
         m_on_moved_right.emit();
         m_position.x += move_speed * delta;
-        const float max_paddle_position = static_cast<float>(m_window_size.x) - m_rectangle.getSize().x;
+        const float max_paddle_position = static_cast<float>(m_window_size.x) - static_cast<float>(m_sprite.getTexture().getSize().x);
         if (m_position.x > static_cast<float>(max_paddle_position)) {
             m_position.x = static_cast<float>(max_paddle_position);
         }
     }
 
-    m_rectangle.setPosition(sf::Vector2f(m_position));
+    m_sprite.setPosition(sf::Vector2f(m_position));
 }
 
 void Paddle::set_window_size(sf::Vector2u window_size) {
@@ -51,18 +54,18 @@ void Paddle::set_window_size(sf::Vector2u window_size) {
 }
 
 void Paddle::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-    target.draw(m_rectangle, states);
+    target.draw(m_sprite, states);
 }
 
 sf::FloatRect Paddle::get_bounds() const {
-    return m_rectangle.getGlobalBounds();
+    return m_sprite.getGlobalBounds();
 }
 
 void Paddle::reset() {
-    const sf::Vector2f paddle_size = m_rectangle.getSize();
-    m_position.x = (static_cast<float>(m_window_size.x) / 2.0f) - (paddle_size.x / 2.0f);
+    const sf::Vector2u paddle_size = m_sprite.getTexture().getSize();
+    m_position.x = (static_cast<float>(m_window_size.x) / 2.0f) - (static_cast<float>(paddle_size.x) / 2.0f);
     m_position.y = static_cast<float>(m_window_size.y) / 1.1f;
-    m_rectangle.setPosition(m_position);
+    m_sprite.setPosition(m_position);
 }
 
 sf::Vector2f Paddle::get_position() const {
