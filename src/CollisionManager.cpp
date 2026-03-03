@@ -57,10 +57,8 @@ void CollisionManager::on_collision_signal(GameObject &source, const sf::FloatRe
 
             if (paddle) {
                 ball->bounce_vertical(other_bounds);
-                ball->paddle_bounce_signal().emit(other_bounds);
             } else if (brick && !brick->is_destroyed()) {
                 ball->bounce_brick(other_bounds);
-                ball->brick_bounce_signal().emit(other_bounds);
                 brick->mark_destroyed();
             }
         }
