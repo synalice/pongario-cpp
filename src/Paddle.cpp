@@ -57,7 +57,8 @@ sf::FloatRect Paddle::get_bounds() const {
 }
 
 void Paddle::reset() {
-    m_position.x = static_cast<float>(m_window_size.x) / 2.0f;
+    const sf::Vector2f paddle_size = m_rectangle.getSize();
+    m_position.x = (static_cast<float>(m_window_size.x) / 2.0f) - (paddle_size.x / 2.0f);
     m_position.y = static_cast<float>(m_window_size.y) / 1.1f;
     m_rectangle.setPosition(m_position);
 }
