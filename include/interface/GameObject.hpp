@@ -6,6 +6,7 @@
 
 #include "interface/Collidable.hpp"
 #include "interface/PhysicsProcessor.hpp"
+#include "interface/Signal.hpp"
 
 #include <SFML/Graphics/Drawable.hpp>
 
@@ -15,6 +16,16 @@ class GameObject : public sf::Drawable, public PhysicsProcessor, public Collidab
   public:
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override = 0;
     virtual void process_physics(float delta) override {};
+
+    ~GameObject() override = default;
+
+    Signal<GameObject &, const sf::FloatRect &> &collision_signal();
+
+  protected:
+    void emit_collision_signal();
+
+  private:
+    Signal<GameObject &, const sf::FloatRect &> m_collision_signal{};
 };
 
 } // namespace pongario

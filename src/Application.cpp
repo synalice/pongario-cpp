@@ -41,6 +41,11 @@ Application::Application()
     });
 
     m_game_objects.push_back(std::move(ball));
+
+    // Register all game objects with the collision manager
+    for (auto &game_object : m_game_objects) {
+        m_collision_manager.register_game_object(*game_object);
+    }
 }
 
 void Application::run() {
@@ -51,8 +56,6 @@ void Application::run() {
 
         const float delta = clock.restart().asSeconds();
         this->process_physics(delta);
-
-        m_collision_manager.check_collisions(m_game_objects);
 
         this->draw();
     }

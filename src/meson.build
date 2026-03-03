@@ -7,5 +7,6 @@ sources = files(
     'Ball.cpp',
     'CollisionManager.cpp',
     'Paddle.cpp',
+    'interface/GameObject.cpp',
     'main.cpp',
 )

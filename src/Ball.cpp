@@ -115,6 +115,9 @@ void Ball::process_physics(float delta) {
     }
 
     m_circle.setPosition(sf::Vector2f(m_position));
+
+    // Emit collision signal after position update
+    emit_collision_signal();
 }
 
 Signal<> &Ball::wall_bounce_signal() {

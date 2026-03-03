@@ -5,21 +5,27 @@
 #pragma once
 
 #include "interface/GameObject.hpp"
+#include "interface/Signal.hpp"
 
-#include <memory>
+#include <unordered_set>
 #include <vector>
 
 namespace pongario {
 
-class Ball;
-class Paddle;
-
 class CollisionManager {
   public:
-    void check_collisions(const std::vector<std::unique_ptr<GameObject>> &objects);
+    CollisionManager();
+    ~CollisionManager();
+
+    void register_game_object(GameObject &object);
+    void unregister_game_object(GameObject &object);
 
   private:
-    void handle_ball_paddle_collision(Ball &ball, const Paddle &paddle);
+    void on_collision_signal(GameObject &object, const sf::FloatRect &bounds);
+    void check_collision_with_others(GameObject &source, const sf::FloatRect &source_bounds);
+
+    std::vector<GameObject *> m_registered_objects{};
+    std::unordered_set<Signal<GameObject &, const sf::FloatRect &>::ConnectionId> m_connections{};
 };
 
 } // namespace pongario
