@@ -5,10 +5,10 @@
 #include "Grid.hpp"
 #include "Brick.hpp"
 
-#include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Vector2.hpp>
 
 #include <algorithm>
@@ -26,6 +26,8 @@ Grid::Grid(const GridConfig &config)
 }
 
 void Grid::generate_bricks() {
+    auto texture = std::make_shared<sf::Texture>("assets/block_brown.png");
+
     const float total_grid_width = static_cast<float>(m_grid_config.columns) * m_grid_config.brick_width +
                                    static_cast<float>(m_grid_config.columns - 1) * m_grid_config.horizontal_gap;
 
@@ -39,28 +41,12 @@ void Grid::generate_bricks() {
 
             const BrickConfig config{
                 .position = sf::Vector2f(x, y),
-                .size = sf::Vector2f(m_grid_config.brick_width, m_grid_config.brick_height),
-                .color = get_color_for_row(row)};
+                .scale = {6, 6},
+                .texture = texture,
+            };
 
             m_bricks.push_back(std::make_unique<Brick>(config));
         }
-    }
-}
-
-sf::Color Grid::get_color_for_row(size_t row) const {
-    switch (row) {
-    case 0:
-        return sf::Color::Red;
-    case 1:
-        return sf::Color(255, 165, 0);
-    case 2:
-        return sf::Color::Yellow;
-    case 3:
-        return sf::Color::Green;
-    case 4:
-        return sf::Color::Blue;
-    default:
-        return sf::Color::Magenta;
     }
 }
 

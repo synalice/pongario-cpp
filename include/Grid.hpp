@@ -40,7 +40,6 @@ class Grid : public GameObject {
     GridConfig m_grid_config{};
 
     void generate_bricks();
-    sf::Color get_color_for_row(size_t row) const;
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     void process_physics(float delta) override;
