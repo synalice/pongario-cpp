@@ -43,8 +43,4 @@ void Brick::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     }
 }
 
-void Brick::process_physics(float /*delta*/) {
-    emit_collision_signal();
-}
-
 } // namespace pongario

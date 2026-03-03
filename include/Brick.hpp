@@ -36,7 +36,6 @@ class Brick : public GameObject {
     Signal<Brick &> m_on_destroyed{};
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-    void process_physics(float delta) override;
 };
 
 } // namespace pongario

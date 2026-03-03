@@ -15,7 +15,6 @@ namespace pongario {
 class GameObject : public sf::Drawable, public PhysicsProcessor, public Collidable {
   public:
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override = 0;
-    virtual void process_physics(float delta) override {};
 
     ~GameObject() override = default;
 

@@ -9,7 +9,7 @@ namespace pongario {
 class PhysicsProcessor {
   public:
     virtual ~PhysicsProcessor() = default;
-    virtual void process_physics(float delta) = 0;
+    virtual void process_physics(float delta) {}
 };
 
 } // namespace pongario

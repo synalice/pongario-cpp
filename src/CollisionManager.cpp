@@ -50,26 +50,18 @@ void CollisionManager::on_collision_signal(GameObject &source, const sf::FloatRe
             const auto *paddle = dynamic_cast<const Paddle *>(other);
             auto *brick = dynamic_cast<Brick *>(other);
 
-            if (ball && paddle) {
+            // Process only ball collisions
+            if (!ball) {
+                continue;
+            }
+
+            if (paddle) {
                 ball->bounce_vertical(other_bounds);
                 ball->paddle_bounce_signal().emit(other_bounds);
-            } else if (ball && brick && !brick->is_destroyed()) {
+            } else if (brick && !brick->is_destroyed()) {
                 ball->bounce_brick(other_bounds);
                 ball->brick_bounce_signal().emit(other_bounds);
                 brick->mark_destroyed();
-            } else {
-                ball = dynamic_cast<Ball *>(other);
-                paddle = dynamic_cast<const Paddle *>(&source);
-                brick = dynamic_cast<Brick *>(&source);
-
-                if (ball && paddle) {
-                    ball->bounce_vertical(source_bounds);
-                    ball->paddle_bounce_signal().emit(source_bounds);
-                } else if (ball && brick && !brick->is_destroyed()) {
-                    ball->bounce_brick(source_bounds);
-                    ball->brick_bounce_signal().emit(source_bounds);
-                    brick->mark_destroyed();
-                }
             }
         }
     }
