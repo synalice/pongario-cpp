@@ -11,7 +11,6 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/System/Angle.hpp>
 #include <SFML/System/Vector2.hpp>
-#include <SFML/Window/Keyboard.hpp>
 
 #include <cmath>
 
@@ -22,26 +21,6 @@ Ball::Ball(sf::Vector2u window_size, sf::Vector2f resting_position) : m_resting_
     m_circle.setFillColor(sf::Color::Red);
 
     this->reset();
-}
-
-void Ball::handle_input(float delta) {
-    const float MOVE_SPEED = 1000.0f;
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A)) {
-        m_position.x -= MOVE_SPEED * delta;
-        if (m_position.x < 0.0f) {
-            m_position.x = 0.0f;
-        }
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D)) {
-        m_position.x += MOVE_SPEED * delta;
-        if (m_position.x > static_cast<float>(m_window_size.x)) {
-            m_position.x = static_cast<float>(m_window_size.x);
-        }
-    }
-
-    m_circle.setPosition(sf::Vector2f(m_position));
 }
 
 void Ball::set_window_size(sf::Vector2u window_size) {
