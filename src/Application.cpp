@@ -21,7 +21,7 @@ namespace pongario {
 
 Application::Application()
     : m_window(std::make_unique<sf::RenderWindow>(
-          sf::VideoMode({200, 200}),
+          sf::VideoMode::getDesktopMode(),
           "Pongario",
           sf::Style::None,
           sf::State::Fullscreen)),
