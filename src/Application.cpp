@@ -45,6 +45,7 @@ Application::Application()
 
     ball->die_signal().connect([this]() {
         lifes -= 1;
+        hearts->subtract();
         this->reset();
         if (lifes == 0) {
             m_game_over_pending = true;

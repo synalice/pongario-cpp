@@ -17,7 +17,7 @@ namespace pongario {
 
 GameOverScreen::GameOverScreen(const sf::Font &font) : m_text(font) {
     m_text.setString("Game Over!");
-    m_text.setCharacterSize(72);
+    m_text.setCharacterSize(130);
     m_text.setFillColor(sf::Color::Red);
 
     // Get screen dimensions and center the text

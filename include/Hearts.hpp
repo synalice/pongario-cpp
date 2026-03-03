@@ -22,10 +22,9 @@ class Hearts : public GameObject {
 
     sf::FloatRect get_bounds() const override;
     void subtract();
-    void reset() override;
+    void restart();
 
   private:
-    int m_lifes{LIFES};
     std::shared_ptr<sf::Texture> m_texture{};
     std::vector<sf::Sprite> m_sprites;
 

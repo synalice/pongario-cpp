@@ -18,11 +18,10 @@
 namespace pongario {
 
 Hearts::Hearts() : m_texture(std::make_shared<sf::Texture>("assets/heart.png")) {
-    this->init();
+    this->restart();
 }
 
-void Hearts::init() {
-    m_lifes = LIFES;
+void Hearts::restart() {
     m_sprites.clear();
 
     constexpr float gap = 100.0f;
@@ -36,11 +35,7 @@ void Hearts::init() {
 }
 
 void Hearts::subtract() {
-    m_lifes -= 1;
-}
-
-void Hearts::reset() {
-    this->init();
+    m_sprites.pop_back();
 }
 
 sf::FloatRect Hearts::get_bounds() const {
