@@ -30,13 +30,14 @@ class Application {
     int lifes{3};
     bool m_running{true};
     bool m_game_over_pending{false};
+    bool m_game_over_screen_shown{false};
+    CollisionManager m_collision_manager{};
     std::unique_ptr<sf::RenderWindow> m_window{nullptr};
     std::vector<std::shared_ptr<GameObject>> m_game_objects{};
-    CollisionManager m_collision_manager{};
-    std::shared_ptr<Paddle> paddle{};
-    std::shared_ptr<Ball> ball{};
-    std::shared_ptr<GameOverScreen> game_over_screen{};
-    std::shared_ptr<Hearts> hearts{};
+    std::shared_ptr<Paddle> m_paddle{};
+    std::shared_ptr<Ball> m_ball{};
+    std::shared_ptr<GameOverScreen> m_game_over_screen{};
+    std::shared_ptr<Hearts> m_hearts{};
     sf::Font m_font{};
 
     void handle_events();
@@ -44,6 +45,7 @@ class Application {
     void draw();
     void reset();
     void show_game_over_screen();
+    void restart_game();
     sf::Vector2f calculate_ball_resting_position();
 };
 
