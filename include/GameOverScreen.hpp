@@ -18,10 +18,10 @@ class GameOverScreen : public GameObject {
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     sf::FloatRect get_bounds() const override;
-    void process_physics(float delta) override;
 
   private:
-    sf::Text m_text;
+    sf::Text m_text_game_over;
+    sf::Text m_text_press_to_restart;
 };
 
 } // namespace pongario
