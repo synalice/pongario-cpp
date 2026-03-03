@@ -6,9 +6,12 @@
 #include "Ball.hpp"
 #include "Paddle.hpp"
 
+#include <iostream>
 #include <memory>
+#include <utility>
 
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Keyboard.hpp>
@@ -24,7 +27,20 @@ Application::Application()
           sf::Style::None,
           sf::State::Fullscreen)) {
     m_game_objects.push_back(std::make_unique<Paddle>(m_window->getSize()));
-    m_game_objects.push_back(std::make_unique<Ball>(m_window->getSize()));
+
+    auto ball = std::make_unique<Ball>(m_window->getSize());
+
+    ball->wall_bounce_signal().connect([]() {
+        std::cout << "Ball bounced off wall!" << std::endl;
+    });
+
+    ball->paddle_bounce_signal().connect([](const sf::FloatRect &paddle_bounds) {
+        std::cout << "Ball hit paddle at position: ("
+                  << paddle_bounds.position.x << ", "
+                  << paddle_bounds.position.y << ")" << std::endl;
+    });
+
+    m_game_objects.push_back(std::move(ball));
 }
 
 void Application::run() {

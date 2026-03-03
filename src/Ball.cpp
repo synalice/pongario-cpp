@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 #include "Ball.hpp"
+#include "interface/Signal.hpp"
 
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Rect.hpp>
@@ -77,6 +78,8 @@ void Ball::bounce_vertical(const sf::FloatRect &paddle_bounds) {
         m_velocity.y = -current_speed * std::cos(bounce_angle.asRadians());
 
         m_circle.setPosition(m_position);
+
+        m_on_paddle_bounce.emit(paddle_bounds);
     }
 }
 
@@ -94,20 +97,32 @@ void Ball::process_physics(float delta) {
     if (m_position.x < 0.0f) {
         m_position.x = 0.0f;
         m_velocity.x = -m_velocity.x;
+        m_on_wall_bounce.emit();
     } else if (m_position.x + diameter > static_cast<float>(m_window_size.x)) {
         m_position.x = static_cast<float>(m_window_size.x) - diameter;
         m_velocity.x = -m_velocity.x;
+        m_on_wall_bounce.emit();
     }
 
     if (m_position.y < 0.0f) {
         m_position.y = 0.0f;
         m_velocity.y = -m_velocity.y;
+        m_on_wall_bounce.emit();
     } else if (m_position.y + diameter > static_cast<float>(m_window_size.y)) {
         m_position.y = static_cast<float>(m_window_size.y) - diameter;
         m_velocity.y = -m_velocity.y;
+        m_on_wall_bounce.emit();
     }
 
     m_circle.setPosition(sf::Vector2f(m_position));
+}
+
+Signal<> &Ball::wall_bounce_signal() {
+    return m_on_wall_bounce;
+}
+
+Signal<const sf::FloatRect &> &Ball::paddle_bounce_signal() {
+    return m_on_paddle_bounce;
 }
 
 } // namespace pongario
