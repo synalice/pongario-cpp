@@ -18,7 +18,7 @@ class Ball : public GameObject {
   public:
     static constexpr float RADIUS = 50.0f;
 
-    explicit Ball(sf::Vector2u window_size, sf::Vector2f resting_position);
+    explicit Ball(sf::Vector2f resting_position);
 
     void handle_input(float delta);
     void set_window_size(sf::Vector2u window_size);

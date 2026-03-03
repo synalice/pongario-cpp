@@ -12,10 +12,11 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/VideoMode.hpp>
 
 namespace pongario {
 
-Paddle::Paddle(sf::Vector2u window_size) : m_window_size(window_size) {
+Paddle::Paddle() : m_window_size(sf::VideoMode::getDesktopMode().size) {
     m_rectangle.setSize(sf::Vector2f(300.0f, 30.0f));
     m_rectangle.setFillColor(sf::Color::Green);
 

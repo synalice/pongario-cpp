@@ -21,7 +21,7 @@ GameOverScreen::GameOverScreen(const sf::Font &font) : m_text(font) {
     m_text.setFillColor(sf::Color::Red);
 
     // Get screen dimensions and center the text
-    const sf::Vector2u screen_size = sf::VideoMode::getDesktopMode().size; // TODO: Replace all window_size in constructurs with this
+    const sf::Vector2u screen_size = sf::VideoMode::getDesktopMode().size;
     const sf::Vector2f m_screen_center = sf::Vector2f(static_cast<float>(screen_size.x) / 2.0f, static_cast<float>(screen_size.y) / 2.0f);
 
     // Center the text origin

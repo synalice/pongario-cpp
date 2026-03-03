@@ -11,12 +11,13 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/System/Angle.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Window/VideoMode.hpp>
 
 #include <cmath>
 
 namespace pongario {
 
-Ball::Ball(sf::Vector2u window_size, sf::Vector2f resting_position) : m_resting_position(resting_position), m_window_size(window_size) {
+Ball::Ball(sf::Vector2f resting_position) : m_resting_position(resting_position), m_window_size(sf::VideoMode::getDesktopMode().size) {
     m_circle.setRadius(RADIUS);
     m_circle.setFillColor(sf::Color::Red);
 

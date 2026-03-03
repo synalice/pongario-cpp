@@ -13,7 +13,7 @@ namespace pongario {
 
 class Paddle : public GameObject {
   public:
-    explicit Paddle(sf::Vector2u window_size);
+    explicit Paddle();
 
     void handle_input(float delta);
     void set_window_size(sf::Vector2u window_size);

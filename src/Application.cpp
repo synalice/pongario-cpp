@@ -31,7 +31,7 @@ Application::Application()
           "Pongario",
           sf::Style::None,
           sf::State::Fullscreen)),
-      paddle(std::make_shared<Paddle>(m_window->getSize())) {
+      paddle(std::make_shared<Paddle>()) {
     if (!m_font.openFromFile("assets/GentiumBookPlus-Regular.ttf")) {
         // Handle font loading error
         throw std::runtime_error("Failed to load font");
@@ -39,7 +39,7 @@ Application::Application()
 
     game_over_screen = std::make_shared<GameOverScreen>(m_font);
 
-    ball = std::make_shared<Ball>(m_window->getSize(), this->calculate_ball_resting_position());
+    ball = std::make_shared<Ball>(this->calculate_ball_resting_position());
 
     ball->die_signal().connect([this]() {
         lifes -= 1;
