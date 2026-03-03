@@ -62,4 +62,8 @@ void Paddle::reset() {
     m_rectangle.setPosition(m_position);
 }
 
+sf::Vector2f Paddle::get_position() const {
+    return m_position;
+}
+
 } // namespace pongario

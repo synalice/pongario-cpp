@@ -11,8 +11,10 @@
 #include <utility>
 
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <SFML/Window/WindowEnums.hpp>
@@ -25,8 +27,8 @@ Application::Application()
           "Pongario",
           sf::Style::None,
           sf::State::Fullscreen)),
-      ball(std::make_shared<Ball>(m_window->getSize())),
-      paddle(std::make_shared<Paddle>(m_window->getSize())) {
+      paddle(std::make_shared<Paddle>(m_window->getSize())),
+      ball(std::make_shared<Ball>(m_window->getSize())) {
     ball->die_signal().connect([this]() {
         lifes -= 1;
         this->reset();
@@ -63,6 +65,8 @@ Application::Application()
             m_collision_manager.register_game_object(*game_object);
         }
     }
+
+    this->reset();
 }
 
 void Application::run() {
@@ -107,8 +111,20 @@ void Application::draw() {
 }
 
 void Application::reset() {
-    ball->reset();
     paddle->reset();
+
+    const sf::FloatRect paddle_bounds = paddle->get_bounds();
+
+    sf::Vector2f ball_reset_position{};
+    ball_reset_position.x = paddle_bounds.position.x + (paddle_bounds.size.x / 2.0f) - Ball::RADIUS;
+    ball_reset_position.y = paddle_bounds.position.y - (2.0f * Ball::RADIUS);
+
+    if (ball_reset_position.y < 0.0f) {
+        ball_reset_position.y = 0.0f;
+    }
+
+    ball->set_reset_position(ball_reset_position);
+    ball->reset();
 }
 
 } // namespace pongario

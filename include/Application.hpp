@@ -29,8 +29,8 @@ class Application {
     std::unique_ptr<sf::RenderWindow> m_window{nullptr};
     std::vector<std::shared_ptr<GameObject>> m_game_objects{};
     CollisionManager m_collision_manager{};
-    std::shared_ptr<Ball> ball{};
     std::shared_ptr<Paddle> paddle{};
+    std::shared_ptr<Ball> ball{};
 
     void handle_events();
     void process_physics(float delta);

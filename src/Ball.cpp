@@ -18,7 +18,7 @@
 namespace pongario {
 
 Ball::Ball(sf::Vector2u window_size) : m_window_size(window_size) {
-    m_circle.setRadius(50.0f);
+    m_circle.setRadius(RADIUS);
     m_circle.setFillColor(sf::Color::Red);
 
     this->reset();
@@ -46,6 +46,10 @@ void Ball::handle_input(float delta) {
 
 void Ball::set_window_size(sf::Vector2u window_size) {
     m_window_size = window_size;
+}
+
+void Ball::set_reset_position(sf::Vector2f reset_position) {
+    m_reset_position = reset_position;
 }
 
 sf::FloatRect Ball::get_bounds() const {
@@ -173,12 +177,8 @@ Signal<> &Ball::die_signal() {
 }
 
 void Ball::reset() {
-    m_position.x = static_cast<float>(m_window_size.x) / 2.0f;
-    m_position.y = static_cast<float>(m_window_size.y) / 2.0f;
+    m_position = m_reset_position;
     m_circle.setPosition(m_position);
-
-    m_velocity.x = -800.0f;
-    m_velocity.y = -800.0f;
 }
 
 } // namespace pongario
