@@ -9,6 +9,7 @@ sources = files(
     'CollisionManager.cpp',
     'GameOverScreen.cpp',
     'Grid.cpp',
+    'Hearts.cpp',
     'Paddle.cpp',
     'interface/GameObject.cpp',
     'main.cpp',

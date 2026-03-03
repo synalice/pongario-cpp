@@ -19,7 +19,7 @@ class Paddle : public GameObject {
 
     void handle_input(float delta);
     void set_window_size(sf::Vector2u window_size);
-    void reset();
+    void reset() override;
     sf::FloatRect get_bounds() const override;
     sf::Vector2f get_position() const;
     Signal<> &moved_left_signal();
@@ -33,6 +33,7 @@ class Paddle : public GameObject {
     sf::Texture m_texture{};
     sf::Sprite m_sprite;
 
+    void init();
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     void process_physics(float delta) override;
 };

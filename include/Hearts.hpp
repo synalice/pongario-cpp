@@ -5,39 +5,31 @@
 #pragma once
 
 #include "interface/GameObject.hpp"
-#include "interface/Signal.hpp"
 
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
-#include <memory>
+#include <vector>
 
 namespace pongario {
 
-struct BrickConfig {
-    sf::Vector2f position;
-    sf::Vector2f scale;
-    std::shared_ptr<sf::Texture> texture;
-};
+class Hearts : public GameObject {
+    static constexpr int LIFES = 3;
 
-class Brick : public GameObject {
   public:
-    explicit Brick(const BrickConfig &config);
+    explicit Hearts();
 
-    void mark_destroyed();
-    bool is_destroyed() const;
     sf::FloatRect get_bounds() const override;
-
-    Signal<Brick &> &destroyed_signal();
+    void subtract();
+    void reset() override;
 
   private:
-    sf::Vector2f m_position{};
-    bool m_destroyed{false};
-    Signal<Brick &> m_on_destroyed{};
+    int m_lifes{LIFES};
     std::shared_ptr<sf::Texture> m_texture{};
-    sf::Sprite m_sprite;
+    std::vector<sf::Sprite> m_sprites;
 
+    void init();
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };
 

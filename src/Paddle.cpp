@@ -23,7 +23,7 @@ Paddle::Paddle()
 
     m_sprite.setScale({4, 4});
 
-    this->reset();
+    this->init();
 }
 
 void Paddle::process_physics(float delta) {
@@ -61,11 +61,15 @@ sf::FloatRect Paddle::get_bounds() const {
     return m_sprite.getGlobalBounds();
 }
 
-void Paddle::reset() {
+void Paddle::init() {
     const sf::Vector2u paddle_size = m_sprite.getTexture().getSize();
     m_position.x = (static_cast<float>(m_window_size.x) / 2.0f) - (static_cast<float>(paddle_size.x) / 2.0f);
     m_position.y = static_cast<float>(m_window_size.y) / 1.1f;
     m_sprite.setPosition(m_position);
+}
+
+void Paddle::reset() {
+    this->init();
 }
 
 sf::Vector2f Paddle::get_position() const {

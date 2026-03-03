@@ -6,6 +6,7 @@
 #include "Ball.hpp"
 #include "GameOverScreen.hpp"
 #include "Grid.hpp"
+#include "Hearts.hpp"
 #include "Paddle.hpp"
 
 #include <memory>
@@ -31,7 +32,8 @@ Application::Application()
           "Pongario",
           sf::Style::None,
           sf::State::Fullscreen)),
-      paddle(std::make_shared<Paddle>()) {
+      paddle(std::make_shared<Paddle>()),
+      hearts(std::make_shared<Hearts>()) {
     if (!m_font.openFromFile("assets/GentiumBookPlus-Regular.ttf")) {
         // Handle font loading error
         throw std::runtime_error("Failed to load font");
@@ -63,6 +65,7 @@ Application::Application()
 
     m_game_objects.push_back(ball);
     m_game_objects.push_back(paddle);
+    m_game_objects.push_back(hearts);
 
     const GridConfig grid_config{
         .window_size = m_window->getSize(),
@@ -140,8 +143,9 @@ void Application::draw() {
 }
 
 void Application::reset() {
-    paddle->reset();
-    ball->reset();
+    for (const auto &game_object : m_game_objects) {
+        game_object->reset();
+    }
 }
 
 sf::Vector2f Application::calculate_ball_resting_position() {

@@ -21,7 +21,7 @@ Ball::Ball(sf::Vector2f resting_position) : m_resting_position(resting_position)
     m_circle.setRadius(RADIUS);
     m_circle.setFillColor(sf::Color::Red);
 
-    this->reset();
+    this->init();
 }
 
 void Ball::set_window_size(sf::Vector2u window_size) {
@@ -152,11 +152,15 @@ Signal<> &Ball::die_signal() {
     return m_on_die;
 }
 
-void Ball::reset() {
+void Ball::init() {
     m_position = m_resting_position;
     m_circle.setPosition(m_position);
     m_velocity = sf::Vector2f{0, 0};
     m_is_moving = false;
+}
+
+void Ball::reset() {
+    this->init();
 }
 
 sf::Vector2f Ball::get_velocity() const {

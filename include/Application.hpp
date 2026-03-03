@@ -7,6 +7,7 @@
 #include "Ball.hpp"
 #include "CollisionManager.hpp"
 #include "GameOverScreen.hpp"
+#include "Hearts.hpp"
 #include "Paddle.hpp"
 #include "interface/GameObject.hpp"
 
@@ -35,6 +36,7 @@ class Application {
     std::shared_ptr<Paddle> paddle{};
     std::shared_ptr<Ball> ball{};
     std::shared_ptr<GameOverScreen> game_over_screen{};
+    std::shared_ptr<Hearts> hearts{};
     sf::Font m_font{};
 
     void handle_events();

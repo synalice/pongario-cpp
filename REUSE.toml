@@ -44,3 +44,8 @@ SPDX-License-Identifier = "CC-BY-4.0"
 path = "assets/ball_default.png"
 SPDX-FileCopyrightText = "© 2003-2022 Jack Boakes (www.jackboakes.com)"
 SPDX-License-Identifier = "CC-BY-4.0"
+
+[[annotations]]
+path = "assets/heart.png"
+SPDX-FileCopyrightText = "© 2003-2022 Snoblin (https://snoblin.itch.io/)"
+SPDX-License-Identifier = "CC-BY-4.0"

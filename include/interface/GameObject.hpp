@@ -6,13 +6,14 @@
 
 #include "interface/Collidable.hpp"
 #include "interface/PhysicsProcessor.hpp"
+#include "interface/Resettable.hpp"
 #include "interface/Signal.hpp"
 
 #include <SFML/Graphics/Drawable.hpp>
 
 namespace pongario {
 
-class GameObject : public sf::Drawable, public PhysicsProcessor, public Collidable {
+class GameObject : public sf::Drawable, public PhysicsProcessor, public Collidable, public Resettable {
   public:
     ~GameObject() override = default;
 

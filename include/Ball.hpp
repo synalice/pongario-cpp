@@ -24,7 +24,7 @@ class Ball : public GameObject {
     void set_window_size(sf::Vector2u window_size);
     void bounce_vertical(const sf::FloatRect &paddle_bounds);
     void bounce_brick(const sf::FloatRect &brick_bounds);
-    void reset();
+    void reset() override;
     void set_velocity(sf::Vector2f velocity);
     bool is_moving() const;
     sf::FloatRect get_bounds() const override;
@@ -40,6 +40,7 @@ class Ball : public GameObject {
     sf::Vector2u m_window_size{};
     Signal<> m_on_die{};
 
+    void init();
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     void process_physics(float delta) override;
 };
