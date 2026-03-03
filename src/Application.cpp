@@ -37,7 +37,7 @@ Application::Application()
         throw std::runtime_error("Failed to load font");
     }
 
-    auto game_over_screen = std::make_shared<GameOverScreen>(m_font);
+    game_over_screen = std::make_shared<GameOverScreen>(m_font);
 
     ball = std::make_shared<Ball>(m_window->getSize(), this->calculate_ball_resting_position());
 
@@ -45,7 +45,7 @@ Application::Application()
         lifes -= 1;
         this->reset();
         if (lifes == 0) {
-            m_running = false;
+            m_game_over_pending = true;
         }
     });
 
@@ -63,7 +63,6 @@ Application::Application()
 
     m_game_objects.push_back(ball);
     m_game_objects.push_back(paddle);
-    m_game_objects.push_back(game_over_screen);
 
     const GridConfig grid_config{
         .window_size = m_window->getSize(),
@@ -125,6 +124,11 @@ void Application::process_physics(float delta) {
     for (const auto &game_object : m_game_objects) {
         game_object->process_physics(delta);
     }
+
+    if (m_game_over_pending) {
+        m_game_over_pending = false;
+        this->show_game_over_screen();
+    }
 }
 
 void Application::draw() {
@@ -151,6 +155,13 @@ sf::Vector2f Application::calculate_ball_resting_position() {
         ball_resting_position.y = 0.0f;
     }
     return ball_resting_position;
+}
+
+void Application::show_game_over_screen() {
+    if (game_over_screen) {
+        m_game_objects.clear();
+        m_game_objects.push_back(game_over_screen);
+    }
 }
 
 } // namespace pongario
