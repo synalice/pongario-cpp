@@ -32,14 +32,18 @@ class Grid : public GameObject {
 
     const std::vector<std::shared_ptr<Brick>> &get_bricks() const;
     sf::FloatRect get_bounds() const override;
+    int bricks_left();
+    Signal<Brick &> &brick_destroyed_signal();
 
   private:
     std::vector<std::shared_ptr<Brick>> m_bricks{};
     sf::Vector2u m_window_size{};
     GridConfig m_grid_config{};
+    int m_bricks_created{};
+    int m_bricks_destroyed{};
+    Signal<Brick &> m_on_brick_destroyed{};
 
     void generate_bricks();
-
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     void process_physics(float delta) override;
 };

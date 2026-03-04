@@ -4,6 +4,7 @@
 
 #include "Application.hpp"
 #include "Ball.hpp"
+#include "Brick.hpp"
 #include "GameOverScreen.hpp"
 #include "Grid.hpp"
 #include "Hearts.hpp"
@@ -12,7 +13,6 @@
 
 #include <memory>
 #include <stdexcept>
-#include <utility>
 
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Font.hpp>
@@ -71,7 +71,7 @@ void Application::handle_events() {
             m_running = false;
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Space) && m_game_over_screen_shown) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Space) && (m_game_over_screen_shown || m_you_win_screen_shown)) {
             this->restart_game();
         }
     }
@@ -82,9 +82,14 @@ void Application::process_physics(float delta) {
         game_object->process_physics(delta);
     }
 
-    if (m_game_over_pending) {
-        m_game_over_pending = false;
+    if (m_game_over_screen_pending) {
+        m_game_over_screen_pending = false;
         this->show_game_over_screen();
+    }
+
+    if (m_you_win_screen_pending) {
+        m_you_win_screen_pending = false;
+        this->show_you_win_screen();
     }
 }
 
@@ -123,8 +128,16 @@ void Application::show_game_over_screen() {
     }
 }
 
+void Application::show_you_win_screen() {
+    if (m_you_win_screen) {
+        m_you_win_screen_shown = true;
+        m_game_objects.clear();
+        m_game_objects.push_back(m_you_win_screen);
+    }
+}
+
 void Application::restart_game() {
-    m_game_over_pending = false;
+    m_game_over_screen_pending = false;
     m_game_over_screen_shown = false;
 
     m_game_objects.clear();
@@ -138,7 +151,7 @@ void Application::restart_game() {
         m_hearts->subtract();
         this->reset();
         if (m_hearts->get_lifes() == 0) {
-            m_game_over_pending = true;
+            m_game_over_screen_pending = true;
         }
     });
 
@@ -167,13 +180,19 @@ void Application::restart_game() {
         .horizontal_gap = 90.0f,
         .vertical_gap = 100.0f};
 
-    auto grid = std::make_unique<Grid>(grid_config);
+    auto grid = std::make_shared<Grid>(grid_config);
+
+    grid->brick_destroyed_signal().connect([this, grid](Brick &) {
+        if (grid->bricks_left() <= 0) {
+            m_you_win_screen_pending = true;
+        }
+    });
 
     for (auto brick : grid->get_bricks()) {
         m_collision_manager.register_game_object(brick);
     }
 
-    m_game_objects.push_back(std::move(grid));
+    m_game_objects.push_back(grid);
 
     for (auto &game_object : m_game_objects) {
         if (dynamic_cast<Grid *>(game_object.get()) == nullptr) {

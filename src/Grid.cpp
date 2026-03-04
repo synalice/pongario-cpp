@@ -4,6 +4,7 @@
 
 #include "Grid.hpp"
 #include "Brick.hpp"
+#include "interface/Signal.hpp"
 
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -52,7 +53,14 @@ void Grid::generate_bricks() {
                 .texture = textures[dist(gen)],
             };
 
-            m_bricks.push_back(std::make_shared<Brick>(config));
+            auto brick = std::make_shared<Brick>(config);
+            brick->destroyed_signal().connect([this](Brick &brick) {
+                m_bricks_destroyed += 1;
+                m_on_brick_destroyed.emit(brick);
+            });
+
+            m_bricks.push_back(brick);
+            m_bricks_created += 1;
         }
     }
 }
@@ -72,5 +80,13 @@ void Grid::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 }
 
 void Grid::process_physics(float delta) {}
+
+int Grid::bricks_left() {
+    return m_bricks_created - m_bricks_destroyed;
+}
+
+Signal<Brick &> &Grid::brick_destroyed_signal() {
+    return m_on_brick_destroyed;
+}
 
 } // namespace pongario

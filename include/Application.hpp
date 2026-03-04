@@ -29,8 +29,10 @@ class Application {
 
   private:
     bool m_running{true};
-    bool m_game_over_pending{false};
+    bool m_game_over_screen_pending{false};
     bool m_game_over_screen_shown{false};
+    bool m_you_win_screen_pending{false};
+    bool m_you_win_screen_shown{false};
     CollisionManager m_collision_manager{};
     std::unique_ptr<sf::RenderWindow> m_window{nullptr};
     std::vector<std::shared_ptr<GameObject>> m_game_objects{};
@@ -46,6 +48,7 @@ class Application {
     void draw();
     void reset();
     void show_game_over_screen();
+    void show_you_win_screen();
     void restart_game();
     sf::Vector2f calculate_ball_resting_position();
 };
