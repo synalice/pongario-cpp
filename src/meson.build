@@ -11,6 +11,7 @@ sources = files(
     'Grid.cpp',
     'Hearts.cpp',
     'Paddle.cpp',
+    'YouWinScreen.cpp',
     'interface/GameObject.cpp',
     'main.cpp',
 )

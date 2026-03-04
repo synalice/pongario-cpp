@@ -9,6 +9,7 @@
 #include "GameOverScreen.hpp"
 #include "Hearts.hpp"
 #include "Paddle.hpp"
+#include "YouWinScreen.hpp"
 #include "interface/GameObject.hpp"
 
 #include <SFML/Graphics/Drawable.hpp>
@@ -36,6 +37,7 @@ class Application {
     std::shared_ptr<Paddle> m_paddle{};
     std::shared_ptr<Ball> m_ball{};
     std::shared_ptr<GameOverScreen> m_game_over_screen{};
+    std::shared_ptr<YouWinScreen> m_you_win_screen{};
     std::shared_ptr<Hearts> m_hearts{};
     sf::Font m_font{};
 

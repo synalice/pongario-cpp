@@ -8,6 +8,7 @@
 #include "Grid.hpp"
 #include "Hearts.hpp"
 #include "Paddle.hpp"
+#include "YouWinScreen.hpp"
 
 #include <memory>
 #include <stdexcept>
@@ -40,6 +41,7 @@ Application::Application()
     }
 
     m_game_over_screen = std::make_shared<GameOverScreen>(m_font);
+    m_you_win_screen = std::make_shared<YouWinScreen>(m_font);
 
     this->restart_game();
 }
