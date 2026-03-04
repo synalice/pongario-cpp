@@ -122,7 +122,6 @@ void Application::show_game_over_screen() {
 }
 
 void Application::restart_game() {
-    lifes = 3;
     m_game_over_pending = false;
     m_game_over_screen_shown = false;
 
@@ -134,10 +133,9 @@ void Application::restart_game() {
     m_ball = std::make_shared<Ball>(this->calculate_ball_resting_position());
 
     m_ball->die_signal().connect([this]() {
-        lifes -= 1;
         m_hearts->subtract();
         this->reset();
-        if (lifes == 0) {
+        if (m_hearts->get_lifes() == 0) {
             m_game_over_pending = true;
         }
     });

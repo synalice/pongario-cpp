@@ -22,11 +22,12 @@ Hearts::Hearts() : m_texture(std::make_shared<sf::Texture>("assets/heart.png")) 
 }
 
 void Hearts::restart() {
+    m_lifes = LIFES;
     m_sprites.clear();
 
     constexpr float gap = 100.0f;
 
-    for (int i = 0; i < LIFES; i++) {
+    for (int i = 0; i < m_lifes; i++) {
         sf::Sprite sprite(*m_texture);
         sprite.setScale({11, 11});
         sprite.setPosition({static_cast<float>(i) * gap, 0.0f});
@@ -35,6 +36,7 @@ void Hearts::restart() {
 }
 
 void Hearts::subtract() {
+    m_lifes -= 1;
     m_sprites.pop_back();
 }
 
@@ -46,6 +48,10 @@ void Hearts::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     for (const auto &sprite : m_sprites) {
         target.draw(sprite, states);
     }
+}
+
+int Hearts::get_lifes() {
+    return m_lifes;
 }
 
 } // namespace pongario

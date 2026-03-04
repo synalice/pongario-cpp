@@ -27,7 +27,6 @@ class Application {
     void run();
 
   private:
-    int lifes{3};
     bool m_running{true};
     bool m_game_over_pending{false};
     bool m_game_over_screen_shown{false};
