@@ -32,9 +32,7 @@ Application::Application()
           sf::VideoMode::getDesktopMode(),
           "Pongario",
           sf::Style::None,
-          sf::State::Fullscreen)),
-      m_paddle(std::make_shared<Paddle>()),
-      m_hearts(std::make_shared<Hearts>()) {
+          sf::State::Fullscreen)) {
     if (!m_font.openFromFile("assets/GentiumBookPlus-Regular.ttf")) {
         // Handle font loading error
         throw std::runtime_error("Failed to load font");
@@ -194,10 +192,8 @@ void Application::restart_game() {
 
     m_game_objects.push_back(grid);
 
-    for (auto &game_object : m_game_objects) {
-        if (dynamic_cast<Grid *>(game_object.get()) == nullptr) {
-            m_collision_manager.register_game_object(game_object);
-        }
+    for (const auto &game_object : m_game_objects) {
+        m_collision_manager.register_game_object(game_object);
     }
 
     this->reset();

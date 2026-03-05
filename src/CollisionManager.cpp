@@ -49,13 +49,14 @@ void CollisionManager::on_collision_signal(GameObject &source, const sf::FloatRe
         const sf::FloatRect other_bounds = other->get_bounds();
         if (source_bounds.findIntersection(other_bounds).has_value()) {
             auto *ball = dynamic_cast<Ball *>(&source);
-            const auto *paddle = dynamic_cast<const Paddle *>(other.get());
-            auto *brick = dynamic_cast<Brick *>(other.get());
 
             // Process only ball collisions
             if (!ball) {
                 continue;
             }
+
+            const auto *paddle = dynamic_cast<const Paddle *>(other.get());
+            auto *brick = dynamic_cast<Brick *>(other.get());
 
             if (paddle) {
                 ball->bounce_vertical(other_bounds);
